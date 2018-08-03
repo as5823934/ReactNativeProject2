@@ -10,7 +10,8 @@ export default class App extends React.Component {
       isRunning: false,
       mainTimeStart: null,
       lapTimeStart: null,
-      count : 0
+      shortCount : 300,
+      longCount: 1500,
     }
   }
 
@@ -33,15 +34,21 @@ export default class App extends React.Component {
       this.setState({
         mainTime: (new Date().getTime() / 1000 - this.state.mainTimeStart + this.state.mainTime).toString().toHHMMSS(),
         lapTime: new Date() - this.state.lapTimeStart + this.state.lapTime,
-        count: this.state.count + 1
+        shortCount: this.state.shortCount - 1
       });
     }, 1000);
+  }
+
+  renderTop(){
+    <View>
+      <Text>..</Text>
+    </View>
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.state.mainTime}</Text>
+        <Text>{this.state.shortCount.toString().toHHMMSS()}</Text>
         <TouchableHighlight>
           <Text onPress={()=> this.handleStartStop()}>{this.state.isRunning ? "Stop" : "Start"}</Text>
         </TouchableHighlight>
@@ -68,5 +75,5 @@ String.prototype.toHHMMSS = function () {
   if (hours   < 10) {hours   = "0"+hours;}
   if (minutes < 10) {minutes = "0"+minutes;}
   if (seconds < 10) {seconds = "0"+seconds;}
-  return hours+':'+minutes+':'+seconds;
+  return minutes+':'+seconds;
 }
