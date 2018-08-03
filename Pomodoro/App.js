@@ -5,13 +5,13 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      mainTime: null,
-      lapTime: null,
+      // mainTime: null,
+      // lapTime: null,
+      // mainTimeStart: null,
+      // lapTimeStart: null,
       isRunning: false,
-      mainTimeStart: null,
-      lapTimeStart: null,
-      shortCount : 300,
-      longCount: 1500,
+      count : 300,
+      //longCount: 1500,
     }
   }
 
@@ -26,32 +26,45 @@ export default class App extends React.Component {
     }
     this.setState({
       isRunning: true,
-      mainTimeStart: new Date().getTime() / 1000,
-      lapTimeStart: new Date(),
+      // mainTimeStart: new Date().getTime() / 1000,
+      // lapTimeStart: new Date(),
     })
 
     this.interval = setInterval(()=>{
       this.setState({
-        mainTime: (new Date().getTime() / 1000 - this.state.mainTimeStart + this.state.mainTime).toString().toHHMMSS(),
-        lapTime: new Date() - this.state.lapTimeStart + this.state.lapTime,
-        shortCount: this.state.shortCount - 1
+        // mainTime: (new Date().getTime() / 1000 - this.state.mainTimeStart + this.state.mainTime).toString().toHHMMSS(),
+        // lapTime: new Date() - this.state.lapTimeStart + this.state.lapTime,
+        count: this.state.count - 1,
+        //longCount: this.state.count - 1
       });
     }, 1000);
   }
 
-  renderTop(){
-    <View>
-      <Text>..</Text>
-    </View>
+  renderTop(){  
+      return (
+        <View style={{flexDirection:'row'}}>
+          <Button title="5 mins" onPress={()=> this.setState({count: 300})}/>
+          <Button title="25 mins" onPress={()=> this.setState({count: 1500})}/>
+          <Button title=" ? mins"/>
+        </View>
+      );
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>{this.state.shortCount.toString().toHHMMSS()}</Text>
-        <TouchableHighlight>
-          <Text onPress={()=> this.handleStartStop()}>{this.state.isRunning ? "Stop" : "Start"}</Text>
-        </TouchableHighlight>
+      <View style={styles.container}> 
+         {this.renderTop()}
+        <View style={styles.container}>
+          <Text>{this.state.count.toString().toHHMMSS()}</Text>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableHighlight>
+            <Text onPress={()=> this.handleStartStop()}>{this.state.isRunning ? "Stop" : "Start"}</Text>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <Text onPress={()=> this.setState({count: 0})}>Reset</Text>
+          </TouchableHighlight>
+          </View>
+        </View>
       </View>
     );
   }
