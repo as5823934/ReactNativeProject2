@@ -47,7 +47,7 @@ export default class App extends React.Component {
     Vibration.vibrate(2000)
   }
 
-  renderTop(){  
+  renderBottom(){  
       return (
         <View style={styles.styleBottom}>
           <Button title="5 mins" onPress={()=> this.setState({count: 300})}/>
@@ -81,7 +81,7 @@ export default class App extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
-        {this.renderTop()}
+        {this.renderBottom()}
       </View>
     );
   }
