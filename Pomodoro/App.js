@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableHighlight,
+  TextInput
+} from 'react-native';
 
 export default class App extends React.Component {
   constructor(props){
@@ -11,6 +18,7 @@ export default class App extends React.Component {
       // lapTimeStart: null,
       isRunning: false,
       count : 300,
+      title: "???",
       //longCount: 1500,
     }
   }
@@ -42,10 +50,22 @@ export default class App extends React.Component {
 
   renderTop(){  
       return (
-        <View style={{flexDirection:'row'}}>
+        <View style={[{flexDirection: "row"}, {padding: 50}]}>
           <Button title="5 mins" onPress={()=> this.setState({count: 300})}/>
           <Button title="25 mins" onPress={()=> this.setState({count: 1500})}/>
-          <Button title=" ? mins"/>
+          <View style={[{flexDirection: "row"}, {alignItems: "center"}, {justifyContent: "center"}]}>
+            <TextInput 
+              onChangeText={
+                (title) => this.setState({
+                  count: 60 * parseInt(title, 10),
+                  title
+                })
+              }
+              value={this.state.title}
+              style={[{ color: 'blue' }, { fontSize: 18 }]}
+            />
+            <Text style = {[{ color: 'blue'}, {fontSize: 18 }]}> mins</Text>
+          </View>
         </View>
       );
   }
