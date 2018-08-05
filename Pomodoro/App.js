@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, TextInput } from 'react-native';
 import { Icon, Button } from 'react-native-elements'
 
 export default class App extends React.Component {
@@ -8,6 +8,7 @@ export default class App extends React.Component {
     this.state={
       isRunning: false,
       count : 300,
+      title: "???",
     }
   }
 
@@ -52,7 +53,19 @@ export default class App extends React.Component {
         <View style={styles.styleBottom}>
           <Button title="5 mins" onPress={()=> this.setState({count: 300})}/>
           <Button title="25 mins" onPress={()=> this.setState({count: 1500})}/>
-          <Button title=" ? mins" />
+          <View style={[{flexDirection: "row"}, {alignItems: "center"}, {justifyContent: "center"}, { backgroundColor: '#999'}, {paddingHorizontal: 10}]}>
+            <TextInput 
+              onChangeText={
+                (title) => this.setState({
+                  count: 60 * parseInt(title, 10) || 0,
+                  title
+                })
+              }
+              value={this.state.title}
+              style={[{ color: 'white' }, { fontSize: 18 }]}
+            />
+            <Text style = {[{ color: 'white'}, {fontSize: 18 }]}> mins</Text>
+          </View>
         </View>
       );
   }
