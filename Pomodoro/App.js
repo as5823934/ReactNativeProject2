@@ -1,25 +1,14 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TouchableHighlight,
-  TextInput
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, TextInput } from 'react-native';
+import { Icon, Button } from 'react-native-elements'
 
 export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      // mainTime: null,
-      // lapTime: null,
-      // mainTimeStart: null,
-      // lapTimeStart: null,
       isRunning: false,
       count : 300,
       title: "???",
-      //longCount: 1500,
     }
   }
 
@@ -28,43 +17,54 @@ export default class App extends React.Component {
       clearInterval(this.interval)
       this.setState({
         isRunning: false,
-  
       });
       return;
     }
-    this.setState({
-      isRunning: true,
-      // mainTimeStart: new Date().getTime() / 1000,
-      // lapTimeStart: new Date(),
-    })
-
-    this.interval = setInterval(()=>{
+    
+    if (this.state.count !== 0) {
       this.setState({
-        // mainTime: (new Date().getTime() / 1000 - this.state.mainTimeStart + this.state.mainTime).toString().toHHMMSS(),
-        // lapTime: new Date() - this.state.lapTimeStart + this.state.lapTime,
-        count: this.state.count - 1,
-        //longCount: this.state.count - 1
-      });
-    }, 1000);
+        isRunning: true,
+      })
+
+      this.interval = setInterval(()=>{
+        this.setState({
+          count: this.state.count - 1,
+        });
+      }, 1000);
+    } else {
+      alert('Please choose your time')
+    }
   }
 
-  renderTop(){  
+  handleReset() {
+    clearInterval(this.interval)
+      this.setState({
+        isRunning: false,
+        count: 0
+      });
+  }
+
+  handleVibrate() {
+    Vibration.vibrate(2000)
+  }
+
+  renderBottom(){  
       return (
-        <View style={[{flexDirection: "row"}, {padding: 50}]}>
+        <View style={styles.styleBottom}>
           <Button title="5 mins" onPress={()=> this.setState({count: 300})}/>
           <Button title="25 mins" onPress={()=> this.setState({count: 1500})}/>
-          <View style={[{flexDirection: "row"}, {alignItems: "center"}, {justifyContent: "center"}]}>
+          <View style={[{flexDirection: "row"}, {alignItems: "center"}, {justifyContent: "center"}, { backgroundColor: '#999'}, {paddingHorizontal: 10}]}>
             <TextInput 
               onChangeText={
                 (title) => this.setState({
-                  count: 60 * parseInt(title, 10),
+                  count: 60 * parseInt(title, 10) || 0,
                   title
                 })
               }
               value={this.state.title}
-              style={[{ color: 'blue' }, { fontSize: 18 }]}
+              style={[{ color: 'white' }, { fontSize: 18 }]}
             />
-            <Text style = {[{ color: 'blue'}, {fontSize: 18 }]}> mins</Text>
+            <Text style = {[{ color: 'white'}, {fontSize: 18 }]}> mins</Text>
           </View>
         </View>
       );
@@ -72,19 +72,29 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}> 
-         {this.renderTop()}
-        <View style={styles.container}>
-          <Text>{this.state.count.toString().toHHMMSS()}</Text>
-          <View style={{flexDirection: 'row'}}>
-          <TouchableHighlight>
-            <Text onPress={()=> this.handleStartStop()}>{this.state.isRunning ? "Stop" : "Start"}</Text>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <Text onPress={()=> this.setState({count: 0})}>Reset</Text>
-          </TouchableHighlight>
+      <View style={styles.container}>   
+        <View style={{paddingTop: 50}}>
+        {/* Time View */}
+          <View style={{alignItems: 'center'}}> 
+            <Text style={{fontSize: 100}}>{this.state.count.toString().toHHMMSS()}</Text>
+          </View>
+        {/* Button View  */}
+          <View style={styles.stylePlayStop}>
+          {this.state.isRunning ? 
+            <TouchableHighlight onPress={()=> this.handleStartStop()}>
+              <Icon name='pause' size={50} color="#000000" />
+            </TouchableHighlight>
+            :
+            <TouchableHighlight onPress={()=> this.handleStartStop()}>
+              <Icon name='play-arrow' size={60} color="#000000" />
+            </TouchableHighlight>}
+
+            <TouchableHighlight onPress={()=> this.handleReset()}>
+              <Icon name='replay' size={50} color="#000000" />
+            </TouchableHighlight>
           </View>
         </View>
+        {this.renderBottom()}
       </View>
     );
   }
@@ -92,11 +102,22 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1, 
+    paddingTop: 20, 
+    backgroundColor: 'lightblue'
   },
+  styleBottom: {
+    flexDirection:'row', 
+    backgroundColor: 'lightblue', 
+    justifyContent: 'space-around',
+    paddingTop: 150 ,
+  },
+  stylePlayStop: {
+    flexDirection: 'row', 
+    justifyContent: 'space-around',
+    paddingTop: 50
+  }
+
 });
 
 String.prototype.toHHMMSS = function () {
