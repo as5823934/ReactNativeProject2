@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TextInput } from 'react-native';
-import { Icon, Button } from 'react-native-elements'
+import { StyleSheet, Text, View, TouchableHighlight, TextInput, Button, Vibration } from 'react-native';
+import { Icon } from 'react-native-elements'
 
 export default class App extends React.Component {
   constructor(props){
@@ -8,7 +8,7 @@ export default class App extends React.Component {
     this.state={
       isRunning: false,
       count : 300,
-      title: "???",
+      title: '',
     }
   }
 
@@ -38,22 +38,34 @@ export default class App extends React.Component {
 
   handleReset() {
     clearInterval(this.interval)
+    if (this.state.count > 300) {
       this.setState({
-        isRunning: false,
-        count: 0
-      });
+        count: 1500,
+        isRunning: false
+      })
+    } else {
+      this.setState({
+        count: 300,
+        isRunning: false
+      })
+    }
+    
   }
 
   handleVibrate() {
     Vibration.vibrate(2000)
   }
 
-  renderBottom(){  
+  renderBottom(){
       return (
         <View style={styles.styleBottom}>
-          <Button title="5 mins" onPress={()=> this.setState({count: 300})}/>
-          <Button title="25 mins" onPress={()=> this.setState({count: 1500})}/>
-          <View style={[{flexDirection: "row"}, {alignItems: "center"}, {justifyContent: "center"}, { backgroundColor: '#999'}, {paddingHorizontal: 10}]}>
+          <View style={{backgroundColor: 'yellow'}}>
+            <Button color="#841584" title="Short" onPress={()=> this.setState({count: 300})}/>
+          </View>
+          <View style={{backgroundColor: 'yellow'}}>
+            <Button  color="#841584" title="Long" onPress={()=> this.setState({count: 1500})}/>
+          </View>
+          <View style={{backgroundColor: 'yellow'}}>
             <TextInput 
               onChangeText={
                 (title) => this.setState({
@@ -62,15 +74,21 @@ export default class App extends React.Component {
                 })
               }
               value={this.state.title}
-              style={[{ color: 'white' }, { fontSize: 18 }]}
+              placeholder='mins'
+              underlineColorAndroid='transparent'
+              style={{fontSize: 18, width: 80, textAlign: 'center', paddingTop: 5}}
             />
-            <Text style = {[{ color: 'white'}, {fontSize: 18 }]}> mins</Text>
           </View>
         </View>
       );
   }
 
   render() {
+    if (this.state.count === 0) {
+      console.log('0000000')
+      this.handleVibrate()
+      this.setState({isRunning: false})
+    }
     return (
       <View style={styles.container}>   
         <View style={{paddingTop: 50}}>
@@ -96,6 +114,7 @@ export default class App extends React.Component {
         </View>
         {this.renderBottom()}
       </View>
+      
     );
   }
 }
