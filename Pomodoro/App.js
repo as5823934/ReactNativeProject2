@@ -76,13 +76,20 @@ export default class App extends React.Component {
   renderBottom(){
       return (
         <View style={styles.styleBottom}>
-          <View style={{backgroundColor: 'yellow'}}>
-            <Button color="#841584" title="Short" onPress={()=> this.setState({count: 300})}/>
+          <View style={styles.buttonStyle}>
+            <Button
+              color="#841584" 
+              title="Short"
+              onPress={()=> this.setState({count: 300})}
+            />
           </View>
-          <View style={{backgroundColor: 'yellow'}}>
-            <Button  color="#841584" title="Long" onPress={()=> this.setState({count: 1500})}/>
+          <View style={styles.buttonStyle}>
+            <Button 
+              color="#841584" 
+              title="Long" 
+              onPress={()=> this.setState({count: 1500})}/>
           </View>
-          <View style={{backgroundColor: 'yellow'}}>
+          <View style={styles.buttonStyle}>
             <TextInput 
               onChangeText={
                 (title) => this.setState({
@@ -94,7 +101,7 @@ export default class App extends React.Component {
               value={this.state.title}
               placeholder='mins'
               underlineColorAndroid='transparent'
-              style={{fontSize: 18, width: 80, textAlign: 'center', paddingTop: 5}}
+              style={{ fontSize: 18, textAlign: 'center', paddingTop: 8, color: "#841584"}}
             />
           </View>
         </View>
@@ -142,7 +149,16 @@ const styles = StyleSheet.create({
     flexDirection:'row', 
     backgroundColor: 'lightblue', 
     justifyContent: 'space-around',
-    paddingTop: 150 ,
+    marginTop: 50,
+    paddingVertical: 20,
+  },
+  buttonStyle: {
+    backgroundColor: 'yellow',
+    width: 90,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   stylePlayStop: {
     flexDirection: 'row', 
