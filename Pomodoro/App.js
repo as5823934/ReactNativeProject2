@@ -53,7 +53,8 @@ export default class App extends React.Component {
   }
 
   handleVibrate() {
-    Vibration.vibrate(2000)
+    Vibration.vibrate(1000)
+    //Vibration.cancel()
   }
 
   renderBottom(){
@@ -84,11 +85,10 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (this.state.count === 0) {
-      console.log('0000000')
-      this.handleVibrate()
-      this.setState({isRunning: false})
-    }
+    // if (this.state.count === 0) {
+    //   console.log('0000000')
+    //   this.setState({isRunning: false},()=> this.handleVibrate())
+    // }
     return (
       <View style={styles.container}>   
         <View style={{paddingTop: 50}}>
