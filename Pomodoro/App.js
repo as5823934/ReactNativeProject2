@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TextInput, Button, Vibration } from 'react-native';
 import { Icon } from 'react-native-elements'
 
+
 export default class App extends React.Component {
   constructor(props){
     super(props);
@@ -9,6 +10,21 @@ export default class App extends React.Component {
       isRunning: false,
       count : 300,
       title: '',
+      usersetting: null
+    }
+  }
+
+  componentWillUpdate(){
+    
+    if (this.state.count === 0 && this.state.isRunning === true) {
+      this.setState({
+        isRunning: false,
+        count: 60 * parseInt(this.state.usersetting, 10)
+        
+      }, () => this.handleVibrate())
+      alert('Times up')
+      clearInterval(this.interval)
+      
     }
   }
 
@@ -53,7 +69,7 @@ export default class App extends React.Component {
   }
 
   handleVibrate() {
-    Vibration.vibrate(1000)
+    Vibration.vibrate([1000, 1000, 1000])
     //Vibration.cancel()
   }
 
@@ -71,7 +87,8 @@ export default class App extends React.Component {
               onChangeText={
                 (title) => this.setState({
                   count: 60 * parseInt(title, 10) || 0,
-                  title
+                  title,
+                  usersetting: title
                 })
               }
               value={this.state.title}
@@ -85,10 +102,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    // if (this.state.count === 0) {
-    //   console.log('0000000')
-    //   this.setState({isRunning: false},()=> this.handleVibrate())
-    // }
     return (
       <View style={styles.container}>   
         <View style={{paddingTop: 50}}>
