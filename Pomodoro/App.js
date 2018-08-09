@@ -98,6 +98,7 @@ export default class App extends React.Component {
                   usersetting: title
                 })
               }
+              keyboardType="numeric"
               value={this.state.title}
               placeholder='mins'
               underlineColorAndroid='transparent'
